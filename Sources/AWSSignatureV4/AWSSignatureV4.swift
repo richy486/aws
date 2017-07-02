@@ -195,10 +195,16 @@ extension AWSSignatureV4 {
             signedHeaders: signedHeaders
         )
         
-        return [
+        var returnHeaders: [HeaderKey: String] = [
             "X-Amz-Date": amzDate,
             "x-amz-content-sha256": payloadHash,
             "Authorization": authorizationHeader
         ]
+        
+        if let contentType = headers["Content-Type"] {
+            returnHeaders["Content-Type"] = contentType
+        }
+        
+        return returnHeaders
     }
 }
